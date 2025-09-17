@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="styles.css">
+	<title>Digital Organization and Productivity</title>
+</head>
+<body>
+  <p id="intro">
+    <strong>Instructions:</strong> Thank you for participating in this brief survey. Your answers are confidential and will only be used for research purposes. There are no right or wrong answers, and your honest feedback is invaluable. This should only take about 3 minutes to complete.
+  </p>
+
+  <!-- Note: the visible inputs keep your original Google `entry.*` names. -->
+  <form id="form" novalidate>
+    <!-- SECTION 1 -->
+    <fieldset data-section="0" class="section">
+      <legend>Section 1: Understanding Your Digital Habits</legend>
+      <p>1. On a typical day, how many files ...?</p>
+      <label><input type="radio" name="entry.1460523037" value="0-5" required>0-5</label>
+      <label><input type="radio" name="entry.1460523037" value="6-10">6-10</label>
+      <label><input type="radio" name="entry.1460523037" value="11-20">11-20</label>
+      <label><input type="radio" name="entry.1460523037" value="More">More than 20</label>
+
+      <p>2. How often do you feel frustrated ...?</p>
+      <label><input type="radio" name="entry.52109554" value="Never" required>Never</label>
+      <label><input type="radio" name="entry.52109554" value="Rarely">Rarely</label>
+      <label><input type="radio" name="entry.52109554" value="Sometimes">Sometimes</label>
+      <label><input type="radio" name="entry.52109554" value="Often">Often</label>
+      <label><input type="radio" name="entry.52109554" value="Always">All the time</label>
+
+      <p>3. When you need to find a specific file ...?</p>
+      <label><input type="radio" name="entry.1060996270" value="Very easy" required>Very easy</label>
+      <label><input type="radio" name="entry.1060996270" value="Somewhat easy">Somewhat easy</label>
+      <label><input type="radio" name="entry.1060996270" value="Neutral">Neutral</label>
+      <label><input type="radio" name="entry.1060996270" value="Somewhat difficult">Somewhat difficult</label>
+      <label><input type="radio" name="entry.1060996270" value="Very difficult">Very difficult</label>
+
+      <div class="buttons">
+        <div style="flex:1"></div>
+        <button type="button" class="next">Next</button>
+      </div>
+    </fieldset>
+
+    <!-- SECTION 2 -->
+    <fieldset data-section="1" class="section section-hidden">
+      <legend>Section 2: Gauging Interest in the Solution</legend>
+      <p>4. Imagine a tool that automatically ... How interested would you be?</p>
+      <label><input type="radio" name="entry.763260311" value="Not at all interested" required>Not at all interested</label>
+      <label><input type="radio" name="entry.763260311" value="Slightly interested">Slightly interested</label>
+      <label><input type="radio" name="entry.763260311" value="Moderately interested">Moderately interested</label>
+      <label><input type="radio" name="entry.763260311" value="Very interested">Very interested</label>
+      <label><input type="radio" name="entry.763260311" value="Extremely interested">Extremely interested</label>
+
+      <p>5. Rank 1–3: which feature is most appealing?</p>
+      <div>
+        <div>It moves all screenshots to one place automatically</div>
+        <label><input type="radio" name="entry.468551687" value="1">1</label>
+        <label><input type="radio" name="entry.468551687" value="2">2</label>
+        <label><input type="radio" name="entry.468551687" value="3">3</label>
+      </div>
+      <div>
+        <div>It can run in background</div>
+        <label><input type="radio" name="entry.1340553446" value="1">1</label>
+        <label><input type="radio" name="entry.1340553446" value="2">2</label>
+        <label><input type="radio" name="entry.1340553446" value="3">3</label>
+      </div>
+      <div>
+        <div>It tracks how many files it cleaned</div>
+        <label><input type="radio" name="entry.1883183100" value="1">1</label>
+        <label><input type="radio" name="entry.1883183100" value="2">2</label>
+        <label><input type="radio" name="entry.1883183100" value="3">3</label>
+      </div>
+
+      <p>6. If a \"Clean Streak\" existed, how likely would you share it?</p>
+      <label><input type="radio" name="entry.443116300" value="Not at all likely" required>Not at all likely</label>
+      <label><input type="radio" name="entry.443116300" value="Somewhat likely">Somewhat likely</label>
+      <label><input type="radio" name="entry.443116300" value="Moderately likely">Moderately likely</label>
+      <label><input type="radio" name="entry.443116300" value="Very likely">Very likely</label>
+      <label><input type="radio" name="entry.443116300" value="Extremely likely">Extremely likely</label>
+
+      <div class="buttons">
+        <button type="button" class="previous secondary">Back</button>
+        <div style="flex:1"></div>
+        <button type="button" class="next">Next</button>
+      </div>
+    </fieldset>
+
+    <!-- SECTION 3 -->
+    <fieldset data-section="2" class="section section-hidden">
+      <legend>Section 3: Reflecting and Closing</legend>
+      <p>7. How do you think most people would feel about a tool that cleans their desktop automatically?</p>
+      <textarea name="entry.577572739" required placeholder="Your thoughts..."></textarea>
+
+      <p>8. If you could give this new type of software a name, what would it be?</p>
+      <textarea name="entry.1730161653" placeholder="e.g., DesktopCleaner"></textarea>
+
+      <div class="buttons">
+        <button type="button" class="previous secondary">Back</button>
+        <div style="flex:1"></div>
+        <button id="submitBtn" type="submit">Submit</button>
+      </div>
+      <div id="submitStatus" class="status" aria-live="polite"></div>
+    </fieldset>
+  </form>
+
+  <!-- Hidden form & iframe: update action to your Google formResponse URL -->
+  <form id="googlePostForm" class="hidden-iframe" method="POST" target="hiddenSubmitFrame"
+        action="https://docs.google.com/forms/d/e/1FAIpQLSfK9OTfYGAOfPV6JKZeC1EcPcAdkkdr6mlFNy4XF-xaBe8bOA/formResponse"></form>
+  <iframe name="hiddenSubmitFrame" id="hiddenSubmitFrame" class="hidden-iframe"></iframe>
+</body>
+<script src="scripts.js" defer></script>
+</html>
