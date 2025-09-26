@@ -1,0 +1,30 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: currentcolor;
+  text-decoration: none;
+  scroll-behavior: smooth;
+}
+#body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+.stage{
+  display: none;
+}
+.stage.active{
+  display: block;
+}
+
+<script>
+  const help = document.getElementById('help')
+  help.addEventListener('click', function(){
+    const before = help.previousElementSibling
+    if(!before.validity.valid){
+      window.alert('fill.your nam')
+    }
+  })
+</script>

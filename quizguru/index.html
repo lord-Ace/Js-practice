@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/index.css">
+  <title>QUIZMASTER</title>
+</head>
+<body>
+	<h1>Welcome To Quizmaster</h1>
+<main id="body">
+<fieldset class="stage">
+  <legend>LETS GET TO KNOW YOU</legend>
+  <input type="text" name="name" id="name" placeholder="What's Your Name?" required>
+  <button class="continue" id="name">Continue</button>
+</fieldset>
+<dialog id="dialog">
+  <h2>Instructions</h2>
+  <p>The Instructions</p>
+  <button>I Understand</button>
+</dialog>
+<fieldset class="stage">
+  <legend>Set Your Difficulty Level</legend>
+  <label><input type="radio" name="difficulty" id="" required value="easy">Easy</label>
+  <label><input type="radio" name="difficulty" id="" value="Medium">Medium</label>
+  <label><input type="radio" name="difficulty" id="" required value="hard">Hard</label>
+  <button class="continue" id="difficulty">Continue</button>
+</fieldset>
+<section class="stage">
+  <h2>Set Your Timer</h2>
+  <input type="number" name="minutes" id="minutes" min="0" max="10" value="05"> :
+  <input type="number" name="seconds" id="section" min="0" max="60" value="00">
+  <button class="continue" id="time">Begin Quiz</button>
+</section>
+</main>
+</body>
+<script src="js/index.js" defer></script>
+</html>
