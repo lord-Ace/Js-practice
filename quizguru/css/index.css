@@ -12,19 +12,9 @@
   justify-content: center;
   min-height: 100vh;
 }
-.stage{
+.data{
   display: none;
 }
-.stage.active{
+.data.active{
   display: block;
 }
-
-<script>
-  const help = document.getElementById('help')
-  help.addEventListener('click', function(){
-    const before = help.previousElementSibling
-    if(!before.validity.valid){
-      window.alert('fill.your nam')
-    }
-  })
-</script>
