@@ -7,41 +7,54 @@
   <title>QUIZMASTER</title>
 </head>
 <body>
-	<h1>Welcome To Quizmaster</h1>
-<main id="body">
+	<!-- <h1>Quizmaster</h1> -->
+<main id="body" class="container">
 <form class="data">
-  <h2>Seems You're New Here</h2>
-<fieldset>
-  <legend>LETS GET TO KNOW YOU</legend>
-  <input type="text" name="name" id="name" placeholder="What's Your Name?" required>
+<fieldset class="game-data container">
+  <legend>Seems You're New Here</legend>
+  <input type="text" name="name" id="name" class="edit" placeholder="What's Your Name?" required>
   <button class="continue">Continue</button>
 </fieldset>
 </form>
 <form class="data">
-<fieldset>
+<fieldset class="game-data container">
   <legend>Set Your Difficulty Level</legend>
-  <label><input type="radio" name="difficulty" id="" required value="easy">Easy</label>
-  <label><input type="radio" name="difficulty" id="" value="Medium">Medium</label>
-  <label><input type="radio" name="difficulty" id="" value="hard">Hard</label>
+  <label class="container"><input type="radio" name="difficulty" required value="easy">Easy</label>
+  <label class="container"><input type="radio" name="difficulty" id="" value="medium">Medium</label>
+  <label class="container"><input type="radio" name="difficulty" id="" value="hard">Hard</label>
   <button class="continue">Continue</button>
 </fieldset>
 </form>
 <form class="data">
-  <h2>Set Your Timer</h2>
-  <input type="number" name="minutes" id="minutes" min="0" max="10" value="05" required> :
-  <input type="number" name="seconds" id="section" min="0" max="60" value="00" required>
+  <fieldset class="game-data container">
+  <legend>Set Your Timer</legend>
+  <input type="number" name="minutes" min="0" max="10" value="05" class="edit" required> :
+  <input type="number" name="seconds" min="0" max="60" value="00" class="edit" required>
   <button class="continue">READY!</button>
+  </fieldset>
 </form>
 <dialog id="dialog">
   <h2>Instructions</h2>
-  <p>The Instructions</p>
+  <p data-summary="name"></p>
   <button id="begin">I Understand</button>
 </dialog>
 <section class="data" id="stage">
-  <div class="info">
-    <p id="score"> Points:</p>
-    <p id="Timer">00:00</p>
+  <div class="game-info">
+    <p id="score">Points:</p>
+    <p id="timer">00:00</p>
   </div>
+  <div id="question-box">
+    <h3 id="question"></h3>
+    <button class="option"></button>
+    <button class="option"></button>
+    <button class="option"></button>
+    <button class="option"></button>
+  </div>
+  <button id="nextQuestion">Next</button>
+</section>
+<section class="data" id="quizEnd">
+  <h2>QUIZ ENDED</h2>
+  <h3>Your Score</h3>
 </section>
 </main>
 </body>

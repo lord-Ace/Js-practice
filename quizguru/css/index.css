@@ -6,10 +6,13 @@
   text-decoration: none;
   scroll-behavior: smooth;
 }
-#body{
+.container{
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
+}
+#body{
   min-height: 100vh;
 }
 .data{
@@ -17,4 +20,47 @@
 }
 .data.active{
   display: block;
+}
+legend{
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+fieldset.game-data{
+  border-radius: 10px;
+  border: 2px solid red;
+  padding: .5rem;
+  gap: .5rem;
+}
+.game-data input, fieldset button{
+  height: 2rem;
+  font-size: 1rem;
+  padding: .5em;
+}
+#dialog{
+  border-radius: 10px;
+  height: 60%;
+  width: 90%;
+  margin: auto;
+}
+#stage{
+  height: stretch;
+  width: stretch;
+  padding: .5rem;
+}
+#question-box{
+  width: 100%;
+  padding: .5rem;
+  border-radius: 10px;
+  margin-top: 50%;
+  border: 3px solid red;
+}
+#question{
+  font-size: 1.5rem;
+}
+.option{
+  width: 100%;
+  padding: .5rem;
+  font-size: 1.5rem;
+  text-align: left;
+  margin-top: 1rem;
 }

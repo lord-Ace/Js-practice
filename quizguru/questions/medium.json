@@ -1,0 +1,137 @@
+[
+    {
+        "question": "What is the chemical symbol for gold?",
+        "options": ["Au", "Ag", "Fe", "Cu"],
+        "correct": 0
+    },
+    {
+        "question": "Which planet is the largest in our solar system?",
+        "options": ["Saturn", "Jupiter", "Neptune", "Uranus"],
+        "correct": 1
+    },
+    {
+        "question": "In which year did World War II end?",
+        "options": ["1944", "1945", "1946", "1947"],
+        "correct": 1
+    },
+    {
+        "question": "Who wrote the novel 'To Kill a Mockingbird'?",
+        "options": [
+            "Harper Lee",
+            "J.D. Salinger",
+            "Mark Twain",
+            "John Steinbeck"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "What is the capital of Canada?",
+        "options": ["Toronto", "Vancouver", "Ottawa", "Montreal"],
+        "correct": 2
+    },
+    {
+        "question": "Which element has the atomic number 1?",
+        "options": ["Helium", "Hydrogen", "Oxygen", "Carbon"],
+        "correct": 1
+    },
+    {
+        "question": "What does the acronym 'URL' stand for?",
+        "options": [
+            "Uniform Resource Locator",
+            "Universal Reference Link",
+            "Unified Resource Locator",
+            "Universal Resource Locator"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "Which ocean is the smallest by surface area?",
+        "options": [
+            "Indian Ocean",
+            "Atlantic Ocean",
+            "Arctic Ocean",
+            "Southern Ocean"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "Who painted the 'Mona Lisa'?",
+        "options": [
+            "Vincent van Gogh",
+            "Leonardo da Vinci",
+            "Pablo Picasso",
+            "Michelangelo"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "What is the main ingredient in traditional hummus?",
+        "options": ["Lentils", "Chickpeas", "Black beans", "Peas"],
+        "correct": 1
+    },
+    {
+        "question": "Which country is known as the Land of the Rising Sun?",
+        "options": ["China", "South Korea", "Japan", "Thailand"],
+        "correct": 2
+    },
+    {
+        "question": "In computing, what does 'CPU' stand for?",
+        "options": [
+            "Central Processing Unit",
+            "Computer Personal Unit",
+            "Central Program Utility",
+            "Core Processing Unit"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "What is the hardest natural substance on Earth?",
+        "options": ["Quartz", "Topaz", "Diamond", "Corundum"],
+        "correct": 2
+    },
+    {
+        "question": "Which ancient structure is located in Egypt?",
+        "options": [
+            "Parthenon",
+            "Colosseum",
+            "Great Pyramid of Giza",
+            "Stonehenge"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "Who developed the theory of relativity?",
+        "options": [
+            "Isaac Newton",
+            "Niels Bohr",
+            "Albert Einstein",
+            "Stephen Hawking"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "What is the currency of Japan?",
+        "options": ["Won", "Yuan", "Yen", "Ringgit"],
+        "correct": 2
+    },
+    {
+        "question": "Which gas is most abundant in Earth's atmosphere?",
+        "options": ["Oxygen", "Carbon Dioxide", "Nitrogen", "Argon"],
+        "correct": 2
+    },
+    {
+        "question": "In which continent is the Amazon rainforest located?",
+        "options": ["Africa", "Asia", "South America", "Australia"],
+        "correct": 2
+    },
+    {
+        "question": "What is the smallest country in the world by area?",
+        "options": ["Monaco", "Nauru", "Vatican City", "San Marino"],
+        "correct": 2
+    },
+    {
+        "question": "Which programming language is known for its use in web development?",
+        "options": ["C++", "Java", "Python", "JavaScript"],
+        "correct": 3
+    }
+]

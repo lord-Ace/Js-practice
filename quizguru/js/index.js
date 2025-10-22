@@ -1,65 +1,534 @@
-document.addEventListener('DOMContentLoaded', function(){
-  const data = document.querySelectorAll('.data')
-  const dialog = document.getElementById('dialog')
-  const begin = document.getElementById('begin')
-  const user = localStorage.getItem('user')//gets the name of the currentuser
-  // user data and game info
-  let gameData = {
-    name: user?.trim() || ' ',
-    difficulty: ' ',
-    duration : {
-     minutes: '0',
-     seconds: '10' 
-    }
-  }
+// ===========================
+// CONSTANTS
+// ===========================
+const STORAGE_KEY = 'quizUser';
+const LAST_FORM_INDEX = 2;
+const LAST_QUESTION_INDEX = 19;
+const BASE_PATH = './questions/';
+const POINTS_PER_QUESTION = 5;
 
-    localStorage.clear()
-  if (!user){
-    data[0].classList.add('active')
-  }else{
-    data[1].classList.add('active')
+// ===========================
+// STATE MANAGEMENT
+// ===========================
+const gameState = {
+  name: '',
+  difficulty: '',
+  duration: {
+    minutes: 0,
+    seconds: 0
+  },
+  questionPath: null,
+  currentQuestionIndex: 0,
+  points: 0,
+  questions: null,
+  answeredCurrentQuestion: false
+};
+
+const timerState = {
+  minutes: 0,
+  seconds: 0,
+  intervalId: null,
+  isRunning: false
+};
+
+// ===========================
+// DOM ELEMENT CACHE
+// ===========================
+const elements = {
+  forms: null,
+  dialog: null,
+  beginButton: null,
+  timerDisplay: null,
+  score: null,
+  questionsDisplay: null,
+  questionContainer: null,
+  optionsContainer: null, // Will be refreshed before each use
+  nextButton: null,
+  quizEnd: null
+};
+
+// ===========================
+// INITIALIZATION
+// ===========================
+function init() {
+  // Cache all DOM elements
+  cacheElements();
+  
+  // Validate required elements exist
+  if (!validateDOM()) {
+    console.error('Required DOM elements not found');
+    return;
   }
   
-  data.forEach((button, index)=>{
-    button.addEventListener('submit', function(e){
-      e.preventDefault()
-      this.classList.remove('active')
-      if (index+1 != 3){
-      data[index+1].classList.add('active')
-      }else{
-      dialog.showModal()
-      }
-      const form = new FormData(this)
-      form.forEach((entry)=>{
-        console.log(it)
-      if(gameData?.[name]){
-        gameData[name]=entry
-        if(name === 'name'){
-          localStorage.setItem('user', entry)
-        }
-      }else{
-        gameData.duration[name]=entry
-      }
-      })
-    })
-  })
+  // Load saved user data (don't clear storage!)
+  loadUserData();
   
-  // const {name, difficulty} = gameData
-  // let {minutes, seconds} = gameData.duration
-  console.log(name)
-  function countDown(){
-    seconds --
-    gameData.duration.seconds = secs
-    if (seconds == 0){
-      seconds = 59
-      minutes--
+  // Setup event listeners
+  setupFormHandlers();
+  setupBeginButtonHandler();
+  
+  // Show initial form
+  showInitialForm();
+}
+
+// Cache all DOM elements at startup
+function cacheElements() {
+  elements.forms = document.querySelectorAll('.data');
+  elements.dialog = document.getElementById('dialog');
+  elements.beginButton = document.getElementById('begin');
+  elements.timerDisplay = document.getElementById('timer');
+  elements.questionsDisplay = document.getElementById('stage');
+  elements.questionContainer = document.getElementById('question');
+  elements.nextButton = document.getElementById('nextQuestion');
+  elements.score = document.getElementById('score');
+  elements.quizEnd = document.getElementById('quizEnd');
+  
+  // Note: optionsContainer will be queried fresh each time we need it
+}
+
+// Validate that all required DOM elements exist
+function validateDOM() {
+  const optionsCheck = document.querySelectorAll('.option');
+  
+  return (
+    elements.forms?.length > 0 &&
+    elements.dialog &&
+    elements.beginButton &&
+    elements.timerDisplay &&
+    elements.questionsDisplay &&
+    elements.questionContainer &&
+    optionsCheck?.length > 0 &&
+    elements.nextButton &&
+    elements.score &&
+    elements.quizEnd
+  );
+}
+
+// Load user data from localStorage
+function loadUserData() {
+  try {
+    const savedUser = localStorage.getItem(STORAGE_KEY);
+    if (savedUser) {
+      gameState.name = savedUser.trim();
     }
-    if(seconds == 0 && minutes-- == 0){
-      console.log('hurray')
-    }
+  } catch (error) {
+    console.warn('localStorage not available:', error);
   }
-  begin.addEventListener('click', function(){
-    dialog.close()
-    setInterval(() => {countDown()}, 1000);
-  })
-})
+}
+
+// Determine and show the appropriate initial form
+function showInitialForm() {
+  localStorage.clear()
+  const startIndex = gameState.name ? 1 : 0;
+  
+  if (elements.forms[startIndex]) {
+    elements.forms[startIndex].classList.add('active');
+  }
+}
+
+// ===========================
+// FORM HANDLING
+// ===========================
+function setupFormHandlers() {
+  elements.forms.forEach((form, index) => {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      handleFormSubmission(form, index);
+    });
+  });
+}
+
+function handleFormSubmission(form, currentIndex) {
+  // Remove active class from current form
+  form.classList.remove('active');
+  
+  // Process form data
+  processFormData(form);
+  
+  // Navigate to next step
+  navigateToNextStep(currentIndex, LAST_FORM_INDEX);
+}
+
+function processFormData(form) {
+  const formData = new FormData(form);
+  
+  formData.forEach((value, fieldName) => {
+    const trimmedValue = String(value).trim();
+    
+    switch (fieldName) {
+      case 'name':
+        gameState.name = trimmedValue;
+        saveUserToStorage(trimmedValue);
+        break;
+      
+      case 'difficulty':
+        gameState.difficulty = trimmedValue;
+        gameState.questionPath = `${BASE_PATH}${trimmedValue}.json`;
+        break;
+      
+      case 'minutes':
+      case 'seconds':
+        gameState.duration[fieldName] = parseInt(trimmedValue, 10) || 0;
+        break;
+    }
+  });
+}
+
+function saveUserToStorage(userName) {
+  try {
+    localStorage.setItem(STORAGE_KEY, userName);
+  } catch (error) {
+    console.warn('Failed to save to localStorage:', error);
+  }
+}
+
+function navigateToNextStep(currentIndex, finalIndex) {
+  const nextIndex = currentIndex + 1;
+  
+  if (nextIndex <= finalIndex) {
+    // Show next form
+    if (elements.forms[nextIndex]) {
+      elements.forms[nextIndex].classList.add('active');
+    }
+  } else {
+    // All forms completed - show dialog and load questions
+    showSummaryDialog();
+  }
+}
+
+// ===========================
+// DIALOG & QUESTION LOADING
+// ===========================
+async function showSummaryDialog() {
+  // Load questions BEFORE showing dialog
+  try {
+    await loadQuestions(gameState.questionPath);
+    
+    // Show dialog after questions are loaded
+    if (elements.dialog.showModal) {
+      elements.dialog.showModal();
+    } else {
+      elements.dialog.setAttribute('open', '');
+    }
+  } catch (error) {
+    alert(`Failed to load questions: ${error.message}`);
+    console.error('Question loading error:', error);
+  }
+}
+
+async function loadQuestions(filePath) {
+  if (!filePath) {
+    throw new Error('No question file path specified');
+  }
+  
+  try {
+    const response = await fetch(filePath);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    gameState.questions = await response.json();
+    
+    // Validate questions structure
+    if (!Array.isArray(gameState.questions) || gameState.questions.length === 0) {
+      throw new Error('Invalid questions format');
+    }
+    
+    console.log(`Loaded ${gameState.questions.length} questions`);
+  } catch (error) {
+    throw new Error(`Failed to load questions: ${error.message}`);
+  }
+}
+
+// ===========================
+// GAME START & TIMER
+// ===========================
+function setupBeginButtonHandler() {
+  elements.beginButton.addEventListener('click', startGame);
+}
+
+function startGame() {
+  // Close dialog
+  elements.dialog.close();
+  
+  // Reset game state
+  resetGameState();
+  
+  // Initialize timer from configuration
+  timerState.minutes = gameState.duration.minutes;
+  timerState.seconds = gameState.duration.seconds;
+  
+  // Show quiz interface
+  elements.questionsDisplay.classList.add('active');
+  
+  // Display first question
+  displayCurrentQuestion();
+  
+  // Start countdown
+  startTimer();
+  
+  // Setup next button handler (only once)
+  setupNextButtonHandler();
+}
+
+function resetGameState() {
+  gameState.currentQuestionIndex = 0;
+  gameState.points = 0;
+  gameState.answeredCurrentQuestion = false;
+  
+  elements.score.textContent = `Points: 0`;
+  elements.nextButton.textContent = 'Next Question';
+}
+
+function startTimer() {
+  if (timerState.isRunning) return;
+  
+  timerState.isRunning = true;
+  updateTimerDisplay();
+  
+  timerState.intervalId = setInterval(tick, 1000);
+}
+
+function stopTimer() {
+  if (timerState.intervalId !== null) {
+    clearInterval(timerState.intervalId);
+    timerState.intervalId = null;
+  }
+  timerState.isRunning = false;
+}
+
+function tick() {
+  timerState.seconds--;
+  
+  // Handle minute rollover
+  if (timerState.seconds < 0) {
+    timerState.seconds = 59;
+    timerState.minutes--;
+  }
+  
+  // Check if timer is complete
+  if (timerState.minutes < 0) {
+    stopTimer();
+    handleTimerComplete();
+    return;
+  }
+  
+  // Update display
+  updateTimerDisplay();
+}
+
+function updateTimerDisplay() {
+  if (!elements.timerDisplay) return;
+  
+  const formattedMinutes = String(timerState.minutes).padStart(2, '0');
+  const formattedSeconds = String(timerState.seconds).padStart(2, '0');
+  
+  elements.timerDisplay.textContent = `Time left: ${formattedMinutes}:${formattedSeconds}`;
+}
+
+function handleTimerComplete() {
+  console.log('Quiz timer expired!');
+  endQuiz();
+}
+
+// ===========================
+// QUESTION DISPLAY (FIXED!)
+// ===========================
+function displayCurrentQuestion() {
+  const currentIndex = gameState.currentQuestionIndex;
+  const question = gameState.questions[currentIndex];
+  
+  // Reset answered state for new question
+  gameState.answeredCurrentQuestion = false;
+  
+  // Display question text
+  elements.questionContainer.textContent = 
+    `${currentIndex + 1}. ${question.question}`;
+  
+  // Display options with FRESH DOM query
+  displayOptions(question, currentIndex);
+  
+  // Update next button text
+  updateNextButtonText();
+}
+
+function displayOptions(question, questionIndex) {
+  // ✅ CRITICAL FIX: Query fresh NodeList each time
+  const optionElements = document.querySelectorAll('.option');
+  
+  optionElements.forEach((option, optionIndex) => {
+    // Set option text
+    option.textContent = question.options[optionIndex];
+    
+    // Remove any previous styling
+    option.classList.remove('correct', 'incorrect', 'disabled');
+    
+    // Store question and option index as data attributes
+    option.dataset.questionIndex = questionIndex;
+    option.dataset.optionIndex = optionIndex;
+  });
+  
+  // Remove old event listeners and add new ones using event delegation
+  // This is more efficient than adding individual listeners
+  setupOptionClickHandlers();
+}
+
+// ✅ NEW: Event delegation pattern for options
+let optionClickHandler = null;
+
+function setupOptionClickHandlers() {
+  // Remove existing handler if present
+  if (optionClickHandler) {
+    elements.questionsDisplay.removeEventListener('click', optionClickHandler);
+  }
+  
+  // Create new handler with current question context
+  optionClickHandler = (event) => {
+    const option = event.target.closest('.option');
+    
+    if (!option) return;
+    
+    // Prevent multiple answers
+    if (gameState.answeredCurrentQuestion) return;
+    
+    // Get indices from data attributes
+    const questionIndex = parseInt(option.dataset.questionIndex);
+    const optionIndex = parseInt(option.dataset.optionIndex);
+    
+    // Validate we're answering the current question
+    if (questionIndex !== gameState.currentQuestionIndex) return;
+    
+    handleOptionClick(questionIndex, optionIndex);
+  };
+  
+  // Add single delegated listener to parent
+  elements.questionsDisplay.addEventListener('click', optionClickHandler);
+}
+
+function handleOptionClick(questionIndex, optionIndex) {
+  // Prevent multiple answers
+  if (gameState.answeredCurrentQuestion) return;
+  
+  gameState.answeredCurrentQuestion = true;
+  
+  // Validate answer
+  validateAnswer(questionIndex, optionIndex);
+  
+  // Disable all options visually
+  const optionElements = document.querySelectorAll('.option');
+  optionElements.forEach(option => {
+    option.classList.add('disabled');
+  });
+}
+
+function validateAnswer(questionIndex, optionIndex) {
+  const question = gameState.questions[questionIndex];
+  const isCorrect = optionIndex === question.correct;
+  
+  // Get fresh option elements
+  const optionElements = document.querySelectorAll('.option');
+  
+  // Visual feedback on the clicked option
+  optionElements[optionIndex].classList.add(
+    isCorrect ? 'correct' : 'incorrect'
+  );
+  
+  if (isCorrect) {
+    gameState.points += POINTS_PER_QUESTION;
+    elements.score.textContent = `Points: ${gameState.points}`;
+    showFeedback('Correct! +5 points', 'success');
+  } else {
+    // Optionally highlight the correct answer
+    optionElements[question.correct].classList.add('correct');
+    showFeedback('Incorrect', 'error');
+  }
+}
+
+function showFeedback(message, type) {
+  // Modern alternative to window.alert()
+  console.log(`[${type.toUpperCase()}] ${message}`);
+  
+  // For now, use alert as fallback
+  // TODO: Replace with custom toast notification
+  alert(message);
+}
+
+// ===========================
+// NAVIGATION
+// ===========================
+function setupNextButtonHandler() {
+  // Remove any existing listener by cloning
+  const newButton = elements.nextButton.cloneNode(true);
+  elements.nextButton.parentNode.replaceChild(newButton, elements.nextButton);
+  elements.nextButton = newButton;
+  
+  // Add single listener
+  elements.nextButton.addEventListener('click', handleNextQuestion);
+}
+
+function handleNextQuestion() {
+  // Prevent skipping without answering
+  if (!gameState.answeredCurrentQuestion) {
+    showFeedback('Please select an answer before continuing', 'warning');
+    return;
+  }
+  
+  gameState.currentQuestionIndex++;
+  
+  if (gameState.currentQuestionIndex <= LAST_QUESTION_INDEX) {
+    displayCurrentQuestion();
+  } else {
+    endQuiz();
+  }
+}
+
+function updateNextButtonText() {
+  if (gameState.currentQuestionIndex === LAST_QUESTION_INDEX) {
+    elements.nextButton.textContent = 'Finish Quiz';
+  } else {
+    elements.nextButton.textContent = 'Next Question';
+  }
+}
+
+// QUIZ END
+function endQuiz() {
+  stopTimer();
+  
+  // Remove option click handler
+  if (optionClickHandler) {
+    elements.questionsDisplay.removeEventListener('click', optionClickHandler);
+    optionClickHandler = null;
+  }
+  
+  elements.questionsDisplay.classList.remove('active');
+  elements.quizEnd.classList.add('active');
+  
+  // Display final score
+  displayFinalScore();
+}
+
+function displayFinalScore() {
+  const finalScoreElement = elements.quizEnd.querySelector('.final-score');
+  if (finalScoreElement) {
+    const totalPossible = (LAST_QUESTION_INDEX + 1) * POINTS_PER_QUESTION;
+    const percentage = Math.round((gameState.points / totalPossible) * 100);
+    
+    finalScoreElement.textContent = 
+      `You scored ${gameState.points} out of ${totalPossible} (${percentage}%)`;
+  }
+}
+
+// CLEANUP
+function cleanup() {
+  stopTimer();
+  
+  // Remove option click handler if exists
+  if (optionClickHandler && elements.questionsDisplay) {
+    elements.questionsDisplay.removeEventListener('click', optionClickHandler);
+  }
+}
+
+// EVENT LISTENERS
+document.addEventListener('DOMContentLoaded', init);
+window.addEventListener('beforeunload', cleanup);

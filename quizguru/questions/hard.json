@@ -1,0 +1,182 @@
+[
+    {
+        "question": "In the context of cryptography, which of these ciphers is considered a type of polyalphabetic substitution cipher?",
+        "options": [
+            "Scytale",
+            "Caesar cipher",
+            "Atbash cipher",
+            "Vigenère cipher"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "The 'Pale Blue Dot' photograph, famously put into perspective by Carl Sagan, was taken by which spacecraft?",
+        "options": [
+            "Voyager 1",
+            "Hubble Space Telescope",
+            "Cassini–Huygens",
+            "Voyager 2"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "Which 19th-century author wrote the novel 'The Charterhouse of Parma'?",
+        "options": [
+            "Gustave Flaubert",
+            "Émile Zola",
+            "Stendhal",
+            "Honoré de Balzac"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "The 'Twin Paradox' is a thought experiment that arises from which physical theory?",
+        "options": [
+            "General Relativity",
+            "Special Relativity",
+            "Quantum Electrodynamics",
+            "Classical Mechanics"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "The ancient city of Hattusa was the capital of which major Bronze Age empire?",
+        "options": [
+            "Assyrian Empire",
+            "Hittite Empire",
+            "Akkadian Empire",
+            "Neo-Babylonian Empire"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "In economics, the 'J-curve effect' is typically associated with what?",
+        "options": [
+            "Income inequality over time",
+            "The short-term impact of currency depreciation",
+            "The lifecycle of a product",
+            "Unemployment during a recession"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "Which of these elements is a f-block element, or lanthanide?",
+        "options": ["Hafnium", "Tantalum", "Lutetium", "Rutherfordium"],
+        "correct": 2
+    },
+    {
+        "question": "The 'Ballets Russes' of the early 20th century was most famously associated with which impresario?",
+        "options": [
+            "Vaslav Nijinsky",
+            "George Balanchine",
+            "Sergei Diaghilev",
+            "Marius Petipa"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "The 'Doomsday Clock' is maintained by which organization?",
+        "options": [
+            "The Bulletin of the Atomic Scientists",
+            "Federation of American Scientists",
+            "International Atomic Energy Agency",
+            "The Rand Corporation"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "Which of these countries was NOT a founding member of the Organization of the Petroleum Exporting Countries (OPEC)?",
+        "options": ["Iran", "Venezuela", "Kuwait", "Algeria"],
+        "correct": 3
+    },
+    {
+        "question": "In Greek mythology, who was the mother of Persephone?",
+        "options": ["Leto", "Hera", "Demeter", "Rhea"],
+        "correct": 2
+    },
+    {
+        "question": "The 'Kuiper Belt' is a region of the Solar System that is primarily composed of what?",
+        "options": [
+            "Asteroids composed mainly of metal",
+            "Small, icy bodies",
+            "Rocky planetesimals",
+            "Comets with extremely long orbital periods"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "The philosophical concept of 'Qualia' is most directly concerned with what?",
+        "options": [
+            "The nature of subjective, conscious experience",
+            "The logical structure of scientific theories",
+            "The ethical implications of artificial intelligence",
+            "The principles of valid inference"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "Which artist painted 'The Night Watch', a famous 1642 militia painting?",
+        "options": [
+            "Johannes Vermeer",
+            "Frans Hals",
+            "Rembrandt van Rijn",
+            "Pieter Bruegel the Elder"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "The 'Marshall Plan' was primarily aimed at the economic recovery of which region after World War II?",
+        "options": [
+            "Southeast Asia",
+            "Eastern Europe",
+            "Western Europe",
+            "East Asia"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "In mathematics, the 'Banach-Tarski Paradox' is a theorem in which field?",
+        "options": [
+            "Measure Theory",
+            "Set Theory",
+            "Differential Geometry",
+            "Combinatorics"
+        ],
+        "correct": 1
+    },
+    {
+        "question": "The 'Macedonian Question' was a major diplomatic issue in late 19th and early 20th century Europe primarily concerning the territory of which declining empire?",
+        "options": [
+            "Byzantine Empire",
+            "Russian Empire",
+            "Austro-Hungarian Empire",
+            "Ottoman Empire"
+        ],
+        "correct": 3
+    },
+    {
+        "question": "Which of these languages is not a member of the Uralic language family?",
+        "options": ["Estonian", "Finnish", "Hungarian", "Euskara (Basque)"],
+        "correct": 3
+    },
+    {
+        "question": "The 'Pax Mongolica' facilitated the travel of which Venetian merchant to China in the 13th century?",
+        "options": [
+            "Giovanni da Pian del Carpine",
+            "William of Rubruck",
+            "Marco Polo",
+            "John of Plano Carpini"
+        ],
+        "correct": 2
+    },
+    {
+        "question": "In computer science, the 'Halting Problem' is a key concept demonstrating the limits of what?",
+        "options": [
+            "Deterministic finite automata",
+            "Turing machines",
+            "Quantum computers",
+            "Lambda calculus"
+        ],
+        "correct": 1
+    }
+]
