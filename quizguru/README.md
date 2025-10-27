@@ -10,8 +10,12 @@ Its not your typical quiz app, it's a fun mini web-based quiz app that uses a pr
 - **Instruction Modal:** A modal that gives a preview of all game data and explains the game logic 
 - **Realtime scoring and timing system:** The scores get updated based on the users choice and  and there's a countdown timer for quiz
 - **Fun Minimalist Quizend Panel:** Subtle minimal animation and quiz analysis
-- **Mid performance analysis:** Minor quiz analysis showing the full qyiz statistics
+- **Mid performance analysis:** Minor quiz analysis showing the full quiz statistics
 - **Option to retake Quiz or start over**
+
+## How To Use
+- This project is fully open source and free to use by anyone intrested. all JavaScript functions are open ended and reusable so feel free to grab any snippet yiu see useful, modify it and add to your project aswell
+- Simply fork or star the project for later reference
 
 ## Built With
 - **vanilla JS**
@@ -41,7 +45,7 @@ QUIZMASTER/
 
 ## challenges Faced
 - Overall it was a kinda smooth process but the only major headache was trying to make sure the options button loaded and didn'tbhave multiple event listeners and crash the entire app
-- Another problem faced was trying to make sure the JSON file parsed properly and was adsignee to the right set of variables
+- Another problem faced was trying to make sure the JSON file parsed properly and was assigned to the right set of variables
 
 ## Resources
 - **CSS Gradient Generator:**
