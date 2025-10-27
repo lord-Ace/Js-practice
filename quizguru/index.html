@@ -28,15 +28,23 @@
 <form class="data">
   <fieldset class="game-data container">
   <legend>Set Your Timer</legend>
-  <input type="number" name="minutes" min="0" max="10" value="05" class="edit" required> :
+  <input type="number" name="minutes" min="0" max="10" value="03" class="edit" required> :
   <input type="number" name="seconds" min="0" max="60" value="00" class="edit" required>
   <button class="continue">READY!</button>
   </fieldset>
 </form>
 <dialog id="dialog">
   <h2>Instructions</h2>
-  <p data-summary="name"></p>
-  <button id="begin">I Understand</button>
+  <p>
+    Welcome <span data-summary='name'>[name]</span> to Quizmaster, a fun game that allows you to test out your knowledge on random stuffs ranging from science to history, fiction and film-making to writing. Anything you can think of.</p>
+    <p>You have chosen your difficulty level to be: <br> <span data-summary='difficulty'>[difficulty]</span></p>
+    <p>
+    And you've set your timer to <br> <span data-summary='duration'></span></p>
+    <p>
+      Each question is followed by four options, do ensure to read the question carefully and select your answer wisely.<br>
+    <strong style="text-align: center">HAVE FUN.</strong>
+    </p>
+  <button id="begin">Begin Quiz</button>
 </dialog>
 <section class="data" id="stage">
   <div class="game-info">
@@ -44,6 +52,7 @@
     <p id="timer">00:00</p>
   </div>
   <div id="question-box">
+  <h1 id="response" class="data"></h1>
     <h3 id="question"></h3>
     <button class="option"></button>
     <button class="option"></button>
@@ -53,8 +62,20 @@
   <button id="nextQuestion">Next</button>
 </section>
 <section class="data" id="quizEnd">
-  <h2>QUIZ ENDED</h2>
-  <h3>Your Score</h3>
+  <h2 class="end">QUIZ ENDED</h2>
+  <h3 class="end">
+    You Scored: <br>
+    <span id="finalScore"></span>/100
+  </h3>
+  <p>Total number of questions: 20</p>
+  <p id="answered">Number of questions Answered: </p>
+  <p id="passed">Number of questions passed: </p>
+  <p id="failed">Number of questions failed: </p>
+  <p id="analysis">Number of questions failed: </p>
+  <div class="container">
+  <button id="retry">Retake Quiz</button>
+  <button id="newQuiz">New Quiz</button>
+  </div>
 </section>
 </main>
 </body>

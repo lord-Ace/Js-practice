@@ -6,6 +6,8 @@ const LAST_FORM_INDEX = 2;
 const LAST_QUESTION_INDEX = 19;
 const BASE_PATH = './questions/';
 const POINTS_PER_QUESTION = 5;
+let answerdQuestions = 0
+let questionsPassed = 0
 
 // ===========================
 // STATE MANAGEMENT
@@ -40,11 +42,15 @@ const elements = {
   beginButton: null,
   timerDisplay: null,
   score: null,
+  response: null,
   questionsDisplay: null,
+  questionBox: null,
   questionContainer: null,
-  optionsContainer: null, // Will be refreshed before each use
+  optionsContainer: null,
   nextButton: null,
-  quizEnd: null
+  quizEnd: null,
+  retryQuiz: null,
+  newQuiz: null
 };
 
 // ===========================
@@ -79,9 +85,13 @@ function cacheElements() {
   elements.timerDisplay = document.getElementById('timer');
   elements.questionsDisplay = document.getElementById('stage');
   elements.questionContainer = document.getElementById('question');
+  elements.questionBox = document.getElementById('question-box')
+  elements.response = document.getElementById('response')
   elements.nextButton = document.getElementById('nextQuestion');
   elements.score = document.getElementById('score');
   elements.quizEnd = document.getElementById('quizEnd');
+  elements.retryQuiz = document.getElementById('retry');
+  elements.newQuiz = document.getElementById('newQuiz');
   
   // Note: optionsContainer will be queried fresh each time we need it
 }
@@ -118,7 +128,7 @@ function loadUserData() {
 
 // Determine and show the appropriate initial form
 function showInitialForm() {
-  localStorage.clear()
+  // localStorage.clear()
   const startIndex = gameState.name ? 1 : 0;
   
   if (elements.forms[startIndex]) {
@@ -192,6 +202,7 @@ function navigateToNextStep(currentIndex, finalIndex) {
     }
   } else {
     // All forms completed - show dialog and load questions
+    elements.questionContainer.textContent = 'loading Questions'
     showSummaryDialog();
   }
 }
@@ -200,6 +211,7 @@ function navigateToNextStep(currentIndex, finalIndex) {
 // DIALOG & QUESTION LOADING
 // ===========================
 async function showSummaryDialog() {
+  updateDialogContent()
   // Load questions BEFORE showing dialog
   try {
     await loadQuestions(gameState.questionPath);
@@ -213,6 +225,19 @@ async function showSummaryDialog() {
   } catch (error) {
     alert(`Failed to load questions: ${error.message}`);
     console.error('Question loading error:', error);
+  }
+}
+
+function updateDialogContent() {
+  // Find or create elements to display the data
+  const nameEl = elements.dialog.querySelector('[data-summary="name"]');
+  const difficultyEl = elements.dialog.querySelector('[data-summary="difficulty"]');
+  const durationEl = elements.dialog.querySelector('[data-summary="duration"]');
+  
+  if (nameEl) nameEl.textContent = gameState.name;
+  if (difficultyEl) difficultyEl.textContent = gameState.difficulty;
+  if (durationEl) {
+    durationEl.textContent = `${gameState.duration.minutes}m ${gameState.duration.seconds}s`;
   }
 }
 
@@ -357,12 +382,14 @@ function displayOptions(question, questionIndex) {
   // ✅ CRITICAL FIX: Query fresh NodeList each time
   const optionElements = document.querySelectorAll('.option');
   
+  elements.response.classList.remove('correct', 'wrong');
+  elements.questionBox.classList.remove('correct', 'wrong');
   optionElements.forEach((option, optionIndex) => {
     // Set option text
     option.textContent = question.options[optionIndex];
     
     // Remove any previous styling
-    option.classList.remove('correct', 'incorrect', 'disabled');
+    option.classList.remove('correct', 'wrong', 'disabled');
     
     // Store question and option index as data attributes
     option.dataset.questionIndex = questionIndex;
@@ -413,7 +440,7 @@ function handleOptionClick(questionIndex, optionIndex) {
   gameState.answeredCurrentQuestion = true;
   
   // Validate answer
-  validateAnswer(questionIndex, optionIndex);
+  validateAnswer(questionIndex, optionIndex, elements.response);
   
   // Disable all options visually
   const optionElements = document.querySelectorAll('.option');
@@ -422,7 +449,7 @@ function handleOptionClick(questionIndex, optionIndex) {
   });
 }
 
-function validateAnswer(questionIndex, optionIndex) {
+function validateAnswer(questionIndex, optionIndex, feedback) {
   const question = gameState.questions[questionIndex];
   const isCorrect = optionIndex === question.correct;
   
@@ -431,32 +458,22 @@ function validateAnswer(questionIndex, optionIndex) {
   
   // Visual feedback on the clicked option
   optionElements[optionIndex].classList.add(
-    isCorrect ? 'correct' : 'incorrect'
+    isCorrect ? 'correct' : 'wrong'
   );
+  feedback.classList.add(isCorrect ? 'correct' : 'wrong')
+  elements.questionBox.classList.add(isCorrect ? 'correct' : 'wrong')
+  feedback.textContent = isCorrect ? 'correct ✔️' : 'wrong ❌️'
+  answerdQuestions++
   
   if (isCorrect) {
     gameState.points += POINTS_PER_QUESTION;
     elements.score.textContent = `Points: ${gameState.points}`;
-    showFeedback('Correct! +5 points', 'success');
+    questionsPassed++
   } else {
-    // Optionally highlight the correct answer
     optionElements[question.correct].classList.add('correct');
-    showFeedback('Incorrect', 'error');
   }
 }
 
-function showFeedback(message, type) {
-  // Modern alternative to window.alert()
-  console.log(`[${type.toUpperCase()}] ${message}`);
-  
-  // For now, use alert as fallback
-  // TODO: Replace with custom toast notification
-  alert(message);
-}
-
-// ===========================
-// NAVIGATION
-// ===========================
 function setupNextButtonHandler() {
   // Remove any existing listener by cloning
   const newButton = elements.nextButton.cloneNode(true);
@@ -468,12 +485,6 @@ function setupNextButtonHandler() {
 }
 
 function handleNextQuestion() {
-  // Prevent skipping without answering
-  if (!gameState.answeredCurrentQuestion) {
-    showFeedback('Please select an answer before continuing', 'warning');
-    return;
-  }
-  
   gameState.currentQuestionIndex++;
   
   if (gameState.currentQuestionIndex <= LAST_QUESTION_INDEX) {
@@ -509,16 +520,49 @@ function endQuiz() {
 }
 
 function displayFinalScore() {
-  const finalScoreElement = elements.quizEnd.querySelector('.final-score');
+  const finalScoreElement = elements.quizEnd.querySelector('#finalScore');
+  const numberAnswered = elements.quizEnd.querySelector('#answered');
+  const numberPassed = elements.quizEnd.querySelector('#passed');
+  const numberfailed = elements.quizEnd.querySelector('#failed');
+  const analyses = elements.quizEnd.querySelector('#analysis');
   if (finalScoreElement) {
-    const totalPossible = (LAST_QUESTION_INDEX + 1) * POINTS_PER_QUESTION;
-    const percentage = Math.round((gameState.points / totalPossible) * 100);
-    
-    finalScoreElement.textContent = 
-      `You scored ${gameState.points} out of ${totalPossible} (${percentage}%)`;
+    let totalPossible = 0
+    setInterval(pee, 100)
+    function pee(){
+    const percentage = Math.round((totalPossible / 100) * 100);
+    finalScoreElement.textContent = `${totalPossible} (${percentage}%)`;
+      if(totalPossible != gameState.points){
+        totalPossible++
+      }else{
+        clearInterval()
+      }
+    }
+    numberAnswered.textContent = `Number of Questions Answered: ${answerdQuestions}`
+    numberPassed.textContent = `Number of Questions Passed: ${questionsPassed}`
+    numberfailed.textContent = `Number of Questions Failed: ${(LAST_QUESTION_INDEX+1) - questionsPassed}`
+    elements.newQuiz.addEventListener('click', ()=>{location.reload()})
+    elements.retryQuiz.addEventListener('click', retake)
+    analyses.textContent = analysis(gameState.points)
   }
 }
 
+function analysis(score){
+  if (score <= 25){
+    return 'Your Score is Very Low'
+  }else if(score <= 49){
+    return 'Your Made Below Average'
+  }else if (score == 50){
+    return 'You Hit The Mid-point Mark'
+  }else if(score <= 99){
+    return 'You Hit The Mid-point Mark'
+  }else{
+    return 'You Had a Perfect Score'
+  }
+}
+function retake(){
+  elements.quizEnd.classList.remove('active')
+  showSummaryDialog();
+}
 // CLEANUP
 function cleanup() {
   stopTimer();

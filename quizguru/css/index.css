@@ -4,16 +4,27 @@
   box-sizing: border-box;
   color: currentcolor;
   text-decoration: none;
+  border: none;
+  outline: none;
   scroll-behavior: smooth;
 }
+:root{
+  --border: 10px;
+  --bg: #fffff7;
 .container{
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
 }
+input, button{
+  border: 1px solid #94A3B8;
+  border-radius: 3px;
+}
 #body{
   min-height: 100vh;
+  background: linear-gradient(to top, #2dd4be, #52ddc7, #6de5d0, #84eed9, #99f6e3);
+  padding: .5rem;
 }
 .data{
   display: none;
@@ -21,15 +32,16 @@
 .data.active{
   display: block;
 }
-legend{
+legend, span, #stage p, #analysis{
   font-size: 1.3rem;
   font-weight: 700;
 }
 fieldset.game-data{
-  border-radius: 10px;
-  border: 2px solid red;
+  border-radius: var(--border);
+  border: 3px solid #94A3Bf;
   padding: .5rem;
   gap: .5rem;
+  background: var(--bg);
 }
 .game-data input, fieldset button{
   height: 2rem;
@@ -37,25 +49,52 @@ fieldset.game-data{
   padding: .5em;
 }
 #dialog{
-  border-radius: 10px;
+  border-radius: var(--border);
+  border: 3px solid #94A3B8;
   height: 60%;
   width: 90%;
   margin: auto;
+  padding: .5rem;
+  background: var(-bg);
+}
+#dialog p, #quizEnd p{
+  margin-top: .8rem;
 }
 #stage{
   height: stretch;
   width: stretch;
   padding: .5rem;
 }
-#question-box{
+#question-box, #quizEnd{
   width: 100%;
   padding: .5rem;
-  border-radius: 10px;
-  margin-top: 50%;
+  border-radius: var(--border);
+  margin-top: 45%;
+  background: var(--bg);
+  gap: 3rem;
+  border: 3px solid #94A3B8;
+}
+#question-box.correct{
+  border: 3px solid green;
+}
+#question-box.wrong{
   border: 3px solid red;
 }
 #question{
   font-size: 1.5rem;
+}
+#nextQuestion, #begin, #retry, #newQuiz{
+  margin: auto;
+  padding: .5rem;
+  display: block;
+  margin-top: 2rem;
+  font-size: 1rem;
+  font-weight: 900;
+}
+.end, strong, #dialog h2{
+  text-align: center;
+  display: block;
+  margin: .6rem 0;
 }
 .option{
   width: 100%;
@@ -63,4 +102,17 @@ fieldset.game-data{
   font-size: 1.5rem;
   text-align: left;
   margin-top: 1rem;
+}
+#response{
+  background-clip: text;
+  color: transparent;
+  text-align: center;
+}
+.correct{
+  display: block;
+  background: linear-gradient(90deg, #9ebd13 10%, #008552 90%);
+}
+.wrong{
+  display: block;
+  background: linear-gradient(90deg, #d53316 0%, #daae99 100%);
 }
