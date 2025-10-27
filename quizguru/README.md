@@ -1,7 +1,9 @@
 # QUIZMASTER
 **a simple quiz app made for you to have fun**
 
-Its notbyour typical quiz app, it's a fun mini web-based quiz app that uses a predefined json file to fetch questions. It features user game data validation (players name, difficulty level and quiz duration)
+### **[QUIZMASTER LIVE](https://quiz-master-lovat.vercel.app/)**
+
+Its not your typical quiz app, it's a fun mini web-based quiz app that uses a predefined json file to fetch questions. It features user game data validation (players name, difficulty level and quiz duration)
 
 ## Features
 - **Multistep gamedata validation:** Collects data from the user based on how they want the game to flow and the tension of question
